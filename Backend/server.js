@@ -5,8 +5,13 @@ require('dotenv').config();
 
 const app = express();
 
-// Middleware
-app.use(cors());
+// Update CORS configuration
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 
 // Connect to MongoDB
@@ -21,9 +26,18 @@ const taskRoutes = require('./routes/tasks');
 app.use('/auth', authRoutes);
 app.use('/tasks', taskRoutes);
 
-// Routes will be added here
+// Add error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: 'Something went wrong!' });
+});
+
+// Add health check route
+app.get('/', (req, res) => {
+  res.json({ status: 'API is running' });
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-}); 
+});
