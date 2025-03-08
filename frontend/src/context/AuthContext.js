@@ -9,7 +9,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
-  const API_URL='http://192.168.0.104:5000/'
+  const API_URL='https://tasker-pi-teal.vercel.app/'
 
   const showToast = (message) => {
     ToastAndroid.show(message, ToastAndroid.SHORT);
